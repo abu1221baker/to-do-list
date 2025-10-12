@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login - Modern To-Do</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0f1724;
+      --muted:#98a3b3;
+      --accent1:linear-gradient(135deg,#7c3aed 0%,#06b6d4 100%);
+      --glass: rgba(255,255,255,0.04);
+      --radius:14px;
+      --shadow: 0 6px 30px rgba(2,6,23,0.6);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(124,58,237,0.12), transparent 8%),
+                  radial-gradient(900px 400px at 90% 90%, rgba(6,182,212,0.08), transparent 8%),
+                  var(--bg);
+      color:#e6eef8;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+
+    .card{
+      width:100%;
+      max-width:420px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:24px;
+      padding:32px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,0.05);
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+    }
+
+    .logo{
+      width:60px;height:60px;border-radius:16px;display:grid;place-items:center;background:var(--accent1);
+      box-shadow: 0 6px 18px rgba(12,15,30,0.5);
+      font-weight:700;font-size:20px;color:white;
+      margin:auto;
+    }
+
+    h1{text-align:center;margin:0;font-size:22px;}
+    p.lead{text-align:center;margin:0;color:var(--muted);font-size:14px;}
+
+    form{display:flex;flex-direction:column;gap:14px;margin-top:12px;}
+
+    .input{
+      background:var(--glass);
+      border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,0.08);
+      outline:none;color:inherit;font-size:15px;
+    }
+
+    .btn{
+      background:var(--accent1);
+      padding:14px;
+      border-radius:12px;
+      border:none;
+      color:white;
+      font-weight:600;
+      font-size:15px;
+      cursor:pointer;
+      box-shadow:0 8px 20px rgba(7,12,20,0.45);
+    }
+
+    .extra{text-align:center;font-size:14px;color:var(--muted);margin-top:8px;}
+    .extra a{color:#7c9fff;text-decoration:none;}
+    .extra a:hover{text-decoration:underline;}
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="logo">TD</div>
+    {%if messages%}
+    {%for message in messages%}
+    {%if message.tag == "error" %}
+    <p>{{message}}</p>
+    {%endif%}
+    {%endfor%}
+    {%endif%}
+    <h1>Welcome Back</h1>
+    <p class="lead">Login to continue managing your tasks</p>
+
+    <form method="POST" action="{%url 'sign'%}">
+      {% csrf_token %}
+      <input type="text" class="input" placeholder="Username" name="username" required>
+      <input type="password" class="input" placeholder="Password" name="password" required>
+      <button type="submit" class="btn">Login</button>
+    </form>
+
+    <div class="extra">
+      Don't have an account? <a href="#">Register</a>
+    </div>
+  </div>
+
+</body>
+</html>

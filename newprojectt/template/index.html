@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Modern To-Do</title>
+  <!-- Google font -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <div class="container">
+
+    <header class="app-header">
+      <div class="brand">
+        <div class="logo">TD</div>
+        <div>
+          <h1>Modern To-Do</h1>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;align-items:center">
+        <form method="get" action="" style="display:flex;gap:8px;align-items:center">
+            
+          <input class="input" name="q" placeholder="Search tasks..." aria-label="Search tasks" />
+          <button class="btn" type="submit">Search</button>
+        </form>
+      </div>
+    </header>
+
+    <main class="main">
+        
+      <form method="POST" action="{%url 'home'%}" class="new-todo">
+        {% csrf_token %}
+        <input name="task" class="input" placeholder="Add a new task (e.g. Finish report)" required />
+        <button class="btn" type="submit">Add</button>
+      </form>
+
+
+      {%for i in context%}
+      <ul class="todos">
+        <li class="todo">
+          <div class="todo-left">
+            <input type="checkbox" class="checkbox"></input>
+            <div>
+              <div class="todo-title"><p id="task_text">{{i.task}}</p></div>
+              <div class="todo-meta">{{i.date}}</div>
+            </div>
+          </div>
+          <div class="todo-actions">
+            <button class="icon-btn" aria-label="Edit">
+              <a href="/update/{{i.id}}"><i class="fa-solid fa-pen"></i></a>
+            </button>
+            <button class="icon-btn" aria-label="Delete">
+              <a href="/delete/{{i.id}}"><i class="fa-solid fa-trash"></i></a>
+            </button>
+          </div>
+        </li>
+        {%endfor%}
+      </main>
+
+
+        
+      </aside>
+      
+    </div>
+    
+    <script src="/static/js/logic.js"></script>
+    
+</body>
+</html>
