@@ -6,6 +6,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 # Create your views here.
 
+
+@login_required
 def home(request):
     if request.method == "POST":
         data = request.POST
@@ -20,6 +22,9 @@ def home(request):
     return render(request,"index.html",context)
 
 def register(request):
+    if request.user.is_authenticated:
+        return redirect("home")
+    
     if request.method == "POST":
         data=request.POST
         username= data.get("username")
@@ -31,7 +36,7 @@ def register(request):
         if User.objects.filter(username=username).exists():
             messages.error(request,"this username already  exits")
 
-        elif User.objects.filter(email=email).exists():
+        if User.objects.filter(email=email).exists():
             messages.error(request,"this email already exits")
         else:
             User.objects.create_user(
@@ -45,6 +50,9 @@ def register(request):
     return render(request,"register.html")
 
 def sign(request):
+    if request.user.is_authenticated:
+        return redirect("home")
+    
     if request.method == "POST":
         data= request.POST
         username=data.get("username")
@@ -56,6 +64,7 @@ def sign(request):
             return redirect("home")
         else:
             messages.error(request,"incorect username or password")
+            return redirect("sign")
         
             
     return render(request,"sign.html")

@@ -77,6 +77,10 @@
     .extra{text-align:center;font-size:14px;color:var(--muted);margin-top:8px;}
     .extra a{color:#7c9fff;text-decoration:none;}
     .extra a:hover{text-decoration:underline;}
+    #error{
+      color:red;
+      text-align:center;
+    }
   </style>
 </head>
 <body>
@@ -85,8 +89,8 @@
     <div class="logo">TD</div>
     {%if messages%}
     {%for message in messages%}
-    {%if message.tag == "error" %}
-    <p>{{message}}</p>
+    {%if message.tags == "error" %}
+    <p id="error">{{message}}</p>
     {%endif%}
     {%endfor%}
     {%endif%}

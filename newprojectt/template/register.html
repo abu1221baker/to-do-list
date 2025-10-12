@@ -77,6 +77,10 @@
     .extra{text-align:center;font-size:14px;color:var(--muted);margin-top:8px;}
     .extra a{color:#7c9fff;text-decoration:none;}
     .extra a:hover{text-decoration:underline;}
+    #error{
+      color:red;
+      text-align:center;
+    }
   </style>
 </head>
 <body>
@@ -85,6 +89,13 @@
     <div class="logo">TD</div>
     <h1>Create Account</h1>
     <p class="lead">Register to start managing your tasks</p>
+    {%if messages%}
+    {%for i in messages%}
+    {%if i.tags == "error"%}
+    <p id="error">{{i}}</p>
+    {%endif%}
+    {%endfor%}
+    {%endif%}
 
     <form method="POST">
       {% csrf_token %}

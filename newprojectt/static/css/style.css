@@ -334,3 +334,8 @@ li.todo {
 .icon-btn i{
   color: white;
 }
+
+.btn a{
+  color: white;
+  text-decoration: none;
+}
