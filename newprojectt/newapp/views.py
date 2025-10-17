@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from .models import Data
+from .models import *
 from django.contrib.auth.models import User
 from  django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -10,12 +10,16 @@ from django.contrib.auth import authenticate,login,logout
 @login_required
 def home(request):
     if request.method == "POST":
+        profile_user = request.user.profile
+
         data = request.POST
         task = data.get("task")
         Data.objects.create(
+            profile = profile_user,
             task=task
         )
-    querryset = Data.objects.all()
+    profile_user = request.user.profile
+    querryset = profile_user.data_set.all()
     if request.GET.get("q"):
         querryset = querryset.filter(task__icontains = request.GET.get("q"))
     context={"context":querryset}
@@ -35,18 +39,22 @@ def register(request):
 
         if User.objects.filter(username=username).exists():
             messages.error(request,"this username already  exits")
+            return redirect("register")
 
         if User.objects.filter(email=email).exists():
             messages.error(request,"this email already exits")
+            return redirect("register")
         else:
-            User.objects.create_user(
+            user = User.objects.create_user(
                 username=username,
                 password=password,
                 first_name=first_name,
                 last_name=last_name,
                 email=email
             )
-            return redirect("sign") 
+            login(request,user)
+            Profile.objects.create(user=user)
+            return redirect("home") 
     return render(request,"register.html")
 
 def sign(request):
